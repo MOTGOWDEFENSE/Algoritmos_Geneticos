@@ -53,7 +53,8 @@ public:
         double getmaxy();
         //----------------------------------------//
         ~MainWindow();
-    private:
+        bool flip(float p);
+private:
         Ui::MainWindow *ui;
         //----------------------------------------//
         //variables para familia()

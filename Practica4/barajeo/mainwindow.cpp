@@ -147,72 +147,86 @@ void MainWindow::cprobabilidad(){
 void MainWindow::barajeo(){
 
     barajeo1[0] = -1;
-    barajeo2[0] = -1;
-    int comodin,selec,contador1=0,ban=0,contador2=0;
-    while(contador1<32){
-        comodin = rand() % miembros;
-        for(int j=0;j<contador1;j++){
-            if(barajeo1[j] == comodin){
-                ban=1;
-                break;
-            }
-        }
-        if(ban==0){
-            //cout << "Barajeo: " << comodin << " Contador1: "<<contador1<< endl;
-            barajeo1[contador1] = comodin;
-            contador1++;
-        }
-        ban=0;
-    }
-    /*cout << endl;
-    cout << "salio del primer while"<<endl;
-    cout << endl;*/
+       barajeo2[0] = -1;
+       float p=0;
+       int comodin,contador1=0,ban=0,contador2=0;
+       while(contador1<16){
+           comodin = rand() % miembros;
+           for(int j=0;j<contador1;j++){
+               if(barajeo1[j] == comodin){
+                   ban=1;
+                   break;
+               }
+           }
+           if(ban==0){
+               barajeo1[contador1] = comodin;
+               contador1++;
+           }
+           ban=0;
+       }
+       contador1 = 0;
+       while(contador1<16){
+           comodin = rand() % miembros;
+           for(int j=0;j<contador1;j++){
+               if(barajeo2[j] == comodin){
+                   ban=1;
+                   break;
+               }
+           }
+           if(ban==0){
+               barajeo2[contador1] = comodin;
+               contador1++;
+           }
+           ban=0;
+       }
+       for(int i=0;i<(miembros-1);i++){
+           p = (float) rand()/RAND_MAX; //el valor de 0.7<=p<=1
 
-    contador1 = 0;
-    while(contador1<32){
-        comodin = rand() % miembros;
-        for(int j=0;j<contador1;j++){
-            if(barajeo2[j] == comodin){
-                ban=1;
-                break;
-            }
-        }
-        if(ban==0){
-            //cout << "Barajeo: " << comodin << " Contador1: "<<contador1<< endl;
-            barajeo2[contador1] = comodin;
-            contador1++;
-        }
-        ban=0;
-    }
-    /* << endl;
-    cout << "salio del primer while"<<endl;
-    cout << endl;*/
-    for(int i=0;i<(miembros-1);i++){
-        selec = rand()%2;
-        //cout << "selec " << selec<<endl;
-        if(selec == 0){
-            padres[contador2] = barajeo1[i];
-            contador2++;
-        }else if(selec == 1){
-            padres[contador2] = barajeo1[i+1];
-            contador2++;
-        }
-        i++;
-    }
-    for(int i=0;i<(miembros-1);i++){
-        selec = rand()%2;
-        if(selec == 0){
-            padres[contador2] = barajeo2[i];
-            contador2++;
-        }else if(selec == 1){
-            padres[contador2] = barajeo2[i+1];
-            contador2++;
-        }
-        i++;
-    }
+           if(flip(p)){//flip sale TRUE
+               if(barajeo2[i]>barajeo2[i+1]) //Asiganmos el que tenga mayor jerarquía
+                   padres[contador2] = barajeo1[i];
+               else
+                   padres[contador2] = barajeo1[i+1];
+
+           }else if(!flip(p)){//flip sale FALSE
+               if(barajeo2[i]<barajeo2[i+1]) //Asiganmos el que tenga menor jerarquía
+                   padres[contador2] = barajeo1[i];
+               else
+                   padres[contador2] = barajeo1[i+1];
+
+           }
+           contador2++;
+           i++;
+       }
+       for(int i=0;i<(miembros-1);i++){
+           p = (float) rand()/RAND_MAX; //el valor de 0.7<=p<=1
+
+           if(flip(p)){//flip sale TRUE
+               if(barajeo2[i]>barajeo2[i+1]) //Asiganmos el que tenga mayor jerarquía
+                   padres[contador2] = barajeo2[i];
+               else
+                   padres[contador2] = barajeo2[i+1];
+
+           }else if(!flip(p)){//flip sale FALSE
+               if(barajeo2[i]<barajeo2[i+1]) //Asiganmos el que tenga menor jerarquía
+                   padres[contador2] = barajeo2[i];
+               else
+                   padres[contador2] = barajeo2[i+1];
+
+           }
+           contador2++;
+           i++;
+       }
     /*for(int i=0;i<miembros;i++){
         cout << "valor: "<<padres[i]<<endl;
     }*/
+}
+
+bool MainWindow::flip(float p){
+    if(p<0.7)
+        return false;
+    else
+        return true;
 }
 
 void MainWindow::cruza(){
