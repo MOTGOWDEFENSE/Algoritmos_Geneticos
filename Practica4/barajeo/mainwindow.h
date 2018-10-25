@@ -34,14 +34,14 @@ public:
         void toBinary(int,int);
         //----------------------------------------//
         //funcion a llamar en tablasA
-        int getMaxI(int*);
-        int getMinI(int*);
+        float getMaxI(float*);
+        float getMinI(float*);
         float getMaxF(float*);
         float getMinF(float*);
         //----------------------------------------//
         //funcion a llamar en tablasB
         int toint(int);
-        int getSuma(int*);
+        float getSuma(float*);
         //----------------------------------------//
         //funcion a llamar en tablasC
         void mutacion();
@@ -52,8 +52,9 @@ public:
         //funciones para graficar()
         double getmaxy();
         //----------------------------------------//
-        ~MainWindow();
         bool flip(float p);
+        ~MainWindow();
+
 private:
         Ui::MainWindow *ui;
         //----------------------------------------//
@@ -74,7 +75,7 @@ private:
         //----------------------------------------//
         //variables para captitud()
         float suma;
-        int aptitud[32];
+        float aptitud[32];
         //----------------------------------------//
         //variables para cprobabilidad()
         float probabilidad[32];

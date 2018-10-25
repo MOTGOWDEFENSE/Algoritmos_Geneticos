@@ -17,9 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-     //familia(32,5,5,3,3);
-     familia(32,5,10,3,3);
-     //familia(32,5,15,3,3);
+     familia(16,5,5,3,3);
+     //familia(16,5,10,3,3);
+     //familia(16,5,15,3,3);
 }
 
 MainWindow::~MainWindow()
@@ -28,7 +28,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::graficar(){
-    cout << "entro a graficar"<<endl;
+    //cout << "entro a graficar"<<endl;
     QVector<double> x(generaciones), y(generaciones), y2(generaciones); // initialize with entries 0..100
     for (int i=0; i<generaciones; ++i)
     {
@@ -70,18 +70,27 @@ void MainWindow::familia(int imiembros,int igenes,int igeneraciones,int ipcruza,
     for(int i=0;i<generaciones;i++){
         //esta parte habra que meterla en un form de tamaño de generaciones en void familia
         llenaindividuos();
+        //cout << "lleno los individuos" << endl;
         captitud();
+        //cout << "calculo la probabilidad" << endl;
         cprobabilidad();
         if(i==0 || i==(generaciones-1))
             TablasA(i+1);
+        //cout << "tablasa"<<endl;
         barajeo();
+        //cout << "barajeo" << endl;
         if(i==0 || i==(generaciones-1))
             TablasA1(i+1);
+        //cout << "tablasa1" << endl;
         cruza();
+        //cout << "cruza";
         if(i==0 || i==(generaciones-1))
             TablasB(i+1);
+        //cout << "tablasb" << endl;
         TablasC(i+1);
+        //cout << "tablasc" << endl;
         maxmin();
+        //cout << "maxmin" << endl;
         reasignar();
     }
     graficar();
@@ -124,13 +133,14 @@ void MainWindow::toBinary(int numero,int valori){
     /*for(int i=0;i<5;i++){
         cout << individuosB[valori][i] ;
     }*/
-    cout << endl;
+    //cout << endl;
 }
 
 void MainWindow::captitud(){
     suma = 0;
     for(int i=0;i<miembros;i++){
-        aptitud[i] = pow(individuosE[i],2);
+        //aptitud[i] = pow(individuosE[i],2);
+        aptitud[i] = (individuosE[i]-5)/(float)(2+sin(individuosE[i]));
         suma += aptitud[i];
         //cout << "x i aptitud" <<" "<<individuosE[i]<<" " <<i << " " << aptitud[i] << endl;
     }
@@ -146,50 +156,57 @@ void MainWindow::cprobabilidad(){
 
 void MainWindow::barajeo(){
 
-    barajeo1[0] = -1;
-       barajeo2[0] = -1;
        float p=0;
-       int comodin,contador1=0,ban=0,contador2=0;
-       while(contador1<16){
-           comodin = rand() % miembros;
-           for(int j=0;j<contador1;j++){
-               if(barajeo1[j] == comodin){
-                   ban=1;
-                   break;
+       barajeo1[0] = -1;
+           barajeo2[0] = -1;
+           int comodin,contador1=0,ban=0,contador2=0;
+           while(contador1<miembros){
+               comodin = rand() % miembros;
+               for(int j=0;j<contador1;j++){
+                   if(barajeo1[j] == comodin){
+                       ban=1;
+                       break;
+                   }
                }
-           }
-           if(ban==0){
-               barajeo1[contador1] = comodin;
-               contador1++;
-           }
-           ban=0;
-       }
-       contador1 = 0;
-       while(contador1<16){
-           comodin = rand() % miembros;
-           for(int j=0;j<contador1;j++){
-               if(barajeo2[j] == comodin){
-                   ban=1;
-                   break;
+               if(ban==0){
+                   //cout << "Barajeo: " << comodin << " Contador1: "<<contador1<< endl;
+                   barajeo1[contador1] = comodin;
+                   contador1++;
                }
+               ban=0;
            }
-           if(ban==0){
-               barajeo2[contador1] = comodin;
-               contador1++;
+           /*cout << endl;
+           cout << "salio del primer while"<<endl;
+           cout << endl;*/
+
+           contador1 = 0;
+           while(contador1<miembros){
+               comodin = rand() % miembros;
+               for(int j=0;j<contador1;j++){
+                   if(barajeo2[j] == comodin){
+                       ban=1;
+                       break;
+                   }
+               }
+               if(ban==0){
+                   //cout << "Barajeo: " << comodin << " Contador1: "<<contador1<< endl;
+                   barajeo2[contador1] = comodin;
+                   contador1++;
+               }
+               ban=0;
            }
-           ban=0;
-       }
+
        for(int i=0;i<(miembros-1);i++){
            p = (float) rand()/RAND_MAX; //el valor de 0.7<=p<=1
 
            if(flip(p)){//flip sale TRUE
-               if(barajeo2[i]>barajeo2[i+1]) //Asiganmos el que tenga mayor jerarquía
+               if(barajeo1[i]>barajeo1[i+1]) //Asiganmos el que tenga mayor jerarquía
                    padres[contador2] = barajeo1[i];
                else
                    padres[contador2] = barajeo1[i+1];
 
            }else if(!flip(p)){//flip sale FALSE
-               if(barajeo2[i]<barajeo2[i+1]) //Asiganmos el que tenga menor jerarquía
+               if(barajeo1[i]<barajeo1[i+1]) //Asiganmos el que tenga menor jerarquía
                    padres[contador2] = barajeo1[i];
                else
                    padres[contador2] = barajeo1[i+1];
@@ -198,6 +215,7 @@ void MainWindow::barajeo(){
            contador2++;
            i++;
        }
+       //cout <<"contador2 "<<contador2<<endl;
        for(int i=0;i<(miembros-1);i++){
            p = (float) rand()/RAND_MAX; //el valor de 0.7<=p<=1
 
@@ -236,12 +254,14 @@ void MainWindow::cruza(){
     for(int i=0;i<miembros;i++){
         for(int j=0;j<genes;j++){
             individuosBC[i][j] = individuosB[padres[i]][j];
+
         }
+        //cout << padres[i]<<endl;
     }
     for(int i=0;i<miembros-1;i++){
         for(int k=0;k<pcruza;k++){
-            individuosBD[i][k] = individuosBC[i][k];
-            individuosBD[i+1][k] = individuosBC[i+1][k];
+            individuosBD[i][k] = individuosBC[i+1][k];
+            individuosBD[i+1][k] = individuosBC[i][k];
         }
         for(int j=pcruza;j<genes;j++){
             individuosBD[i][j] = individuosBC[i+1][j];
@@ -404,7 +424,7 @@ void MainWindow::TablasB(int generacion){
 
         }
     }
-    int binD[miembros];
+    float binD[miembros];
     for(int i = 0; i < miembros;i++){
         archivo<<(i+1)<<setw(4)<< "|"<<setw(10)<< binarioC[i]<< setw(4)<<"|"<<setw(6) <<pcruza<<setw(7)<<" |"<<setw(10)<<binarioD[i]<<setw(6)<<"|"<<setw(5)<<toint(i)<<setw(5)<<"|"<<setw(5)<<(toint(i)*toint(i))<<endl; //SE TIENE QUE OBTENER EL VALOR
         binD[i]=toint(i)*toint(i);
@@ -449,7 +469,7 @@ void MainWindow::TablasC(int generacion){ //Se tiene que mutar aqui porque el ar
             }
         }
 
-        int binD[miembros];
+        float binD[miembros];
         for(int i = 0; i < miembros;i++){
             archivo<<(i+1)<<setw(4)<< "|"<<setw(10)<< binarioD[i]<< setw(4)<<"|"<<setw(6)<<binarioDM[i]<<setw(6)<<"|"<<setw(5)<<toint(i)<<setw(5)<<"|"<<setw(5)<<(toint(i)*toint(i))<<endl; //SE TIENE QUE OBTENER EL VALOR
             binD[i]=toint(i)*toint(i);
@@ -468,23 +488,23 @@ void MainWindow::TablasC(int generacion){ //Se tiene que mutar aqui porque el ar
     }
 }
 
-int MainWindow::getSuma(int *aux){
+float MainWindow::getSuma(float *aux){
     int suma=0;
     for(int i=0;i<miembros;i++)
         suma+=aux[i];
     return suma;
 }
 
-int MainWindow::getMaxI(int *aux){
-    int max=aux[0];
+float MainWindow::getMaxI(float *aux){
+    float max=aux[0];
     for(int i=0;i<miembros;i++)
         if(aux[i] > max)
             max = aux[i];
     return max;
 }
 
-int MainWindow::getMinI(int *aux){
-    int min=aux[0];
+float MainWindow::getMinI(float *aux){
+    float min=aux[0];
     for(int i=0;i<miembros;i++)
         if(aux[i] < min)
             min = aux[i];
@@ -518,4 +538,3 @@ double MainWindow::getmaxy(){
     }
     return (double)regresa;
 }
-
