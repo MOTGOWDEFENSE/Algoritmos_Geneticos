@@ -18,11 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //MainWindow::makePlot();
-    familia(16,4,10,3,5);
+    //familia(16,4,10,3,5);
     //familia(16,4,30,3,5);
     //familia(16,4,50,3,5);
-    //familia(16,4,100,3,5);
+    familia(16,4,100,3,5);
 }
 
 MainWindow::~MainWindow()
@@ -135,13 +134,13 @@ void MainWindow::cprobabilidad(){
 
 void MainWindow::cvalesp(){
     float max=1.1,min = 2- max,sum=0,N=miembros;
-    cout << "max: " << max << endl;
-    cout << "min: " << min << endl;
+    //cout << "max: " << max << endl;
+    //cout << "min: " << min << endl;
     for(int i=0;i<miembros;i++){
         valesp[i] = min-(max-min)*(i/(float)(N-1));
         sum += valesp[i];
     }
-    cout << "sum: valesp " << sum<<endl;
+    //cout << "sum: valesp " << sum<<endl;
 }
 
 void MainWindow::llenaindividuos(){
