@@ -36,10 +36,11 @@ void MainWindow::familia(int imiembros,int igenes,int igeneraciones,int ipcruza,
         pcruza = ipcruza;
         mutar = imutar;
         contador=0;
+        llenaindividuos();//crea individuosE e individuosB
         for(int i=0;i<generaciones;i++){
             //-------------------------------------------------------------------------------------------------
             //esta parte habra que meterla en un form de tamaño de generaciones en void familia
-            llenaindividuos();//crea individuosE e individuosB
+
             captitud();
             cprobabilidad();
             jerarquizaaptitud();
