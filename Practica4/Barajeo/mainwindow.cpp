@@ -68,9 +68,9 @@ void MainWindow::familia(int imiembros,int igenes,int igeneraciones,int ipcruza,
     pcruza = ipcruza;
     mutar = imutar;
     contador=0;
+    llenaindividuos();
     for(int i=0;i<generaciones;i++){
         //esta parte habra que meterla en un form de tamaño de generaciones en void familia
-        llenaindividuos();
         captitud();
         cprobabilidad();
         if(i==0 || i==(generaciones-1))
