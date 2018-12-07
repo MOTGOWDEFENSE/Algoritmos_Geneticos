@@ -306,7 +306,7 @@ int main(int argc, char const *argv[])
             cout<<"Escribe el numero de genes: ";
             cin>>num_genes;
 			m.Heuristica(num_genes);
-		}else if(opc1 == 5){
+		}else{
 			exit(0);
 		}
 		
